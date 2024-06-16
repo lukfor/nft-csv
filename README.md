@@ -46,7 +46,6 @@ Available options:
 
 The result is an object of class `TableWrapper` that contains the following methods:
 
-
 #### `rowCount`
 
 Returns the number of rows in the table.
@@ -228,6 +227,61 @@ with(table){
     assert columnNames == ["col_c", "col_a"]
     assert rowCount == 4
     assert columnCount == 2
+}
+```
+
+### Assertions
+
+This plugin provides two assertions to simplify the comparison of tables containing numbers, using a specified precision.
+
+#### `assertTableEquals(array1, array2, double precision)`
+
+This could be used to compare tables where columns with numbers use the default precision of 0.00001.
+
+```groovy
+then {
+    def expected = csv("tests/data/input/chr20-unphased/scores.expected.txt")
+    def actual = csv("${outputDir}/scores.txt")
+    assertTableEquals actual, expected
+}
+```
+
+A user defined precision can be provided:
+
+```groovy
+then {
+    assertTableEquals actual, expected, 0.000000001
+}
+```
+
+The order of rows and columns has to be same between the tables. However, you could combine it with `sortColumns()`, `sortRows()` or `sort()` to normalize the files:
+
+```groovy
+then {
+    def expected = csv("tests/data/input/chr20-unphased/scores.expected.txt").sort()
+    def actual = csv("${outputDir}/scores.txt").sort()
+    assertTableEquals actual, expected, 0.00001
+}
+```
+
+#### `assertArrayEquals(array1, array2, double precision)`
+
+This could be used to compare arrays containing numbers with precision.
+
+Examples:
+
+```groovy
+then {
+    def expected = csv("tests/data/input/chr20-unphased/scores.expected.txt")
+
+    def actual = csv("${outputDir}/scores.txt")
+    with(actual) {
+        assert columnNames == ["sample", "PGS000027"]
+        assert columns["sample"] == expected.columns["sample"]
+        assertArrayEquals columns["PGS000027"], expected.columns["PGS000027"]
+        // or with user defined precision
+        assertArrayEquals columns["PGS000027"], expected.columns["PGS000027"], 0.0000001
+    }
 }
 ```
 

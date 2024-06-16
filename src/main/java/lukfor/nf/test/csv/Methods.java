@@ -49,5 +49,13 @@ public class Methods {
 		TableComparator.equalsArrays(table1, table2, precision);
 	}
 
+	public static void assertTableEquals(TableWrapper table1, TableWrapper table2) throws Exception {
+		double precision = 0.00001;
+		TableComparator.equalsTables(table1.getTable(), table2.getTable(), precision);
+	}
+
+	public static void assertTableEquals(TableWrapper table1, TableWrapper table2, double precision) throws Exception {
+		TableComparator.equalsTables(table1.getTable(), table2.getTable(), precision);
+	}
 
 }

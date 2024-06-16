@@ -19,7 +19,7 @@ public class TableComparator {
      * @throws AssertionError if the tables are not equal, with details on why they are not equal
      */
 
-    public static boolean equals(Table table1, Table table2, double precision) throws AssertionError {
+    public static boolean equalsTables(Table table1, Table table2, double precision) throws AssertionError {
         if (table1.rowCount() != table2.rowCount()) {
             throw new AssertionError("Row count mismatch: " + table1.rowCount() + " vs " + table2.rowCount());
         }
