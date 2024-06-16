@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
@@ -38,5 +39,15 @@ public class Methods {
 	public static TableWrapper csv(Table table) throws Exception {
 		return new TableWrapper(table);
 	}
+
+	public static void assertArrayEquals(List<Object> table1, List<Object> table2) throws Exception {
+		double precision = 0.00001;
+		TableComparator.equalsArrays(table1, table2, precision);
+	}
+
+	public static void assertArrayEquals(List<Object> table1, List<Object> table2, double precision) throws Exception {
+		TableComparator.equalsArrays(table1, table2, precision);
+	}
+
 
 }
