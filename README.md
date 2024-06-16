@@ -20,7 +20,7 @@ config {
 
 ## Usage
 
-nf-test extends `path` by a `csv` property that can be used to parse csv files. The csv property could be configures with different options.
+nft-csv extends `path` by a `csv` property that can be used to parse csv files. The csv property could be configures with different options.
 
 Example:
 
