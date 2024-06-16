@@ -1,0 +1,5 @@
+moduleName=nft-csv
+moduleVersion=0.1.0
+moduleAuthors=Lukas Forer
+extensionClasses=lukfor.nf.test.csv.PathExtension
+extensionMethods=lukfor.nf.test.csv.Methods
