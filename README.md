@@ -20,7 +20,7 @@ config {
 
 ## Usage
 
-nft-csv extends `path` by a `csv` property that can be used to parse csv files. The csv property could be configures with different options.
+nft-csv extends `path` by a `csv` property that can be used to parse csv files. The csv property could be configured with different options.
 
 Example:
 
@@ -44,7 +44,7 @@ Available options:
 - `quote`: The character used to quote values (default:  `""`).
 - `decompress`: When true, decompress the content using the GZIP format before processing it (default: `false`). Files with the `.gz` extension are **NOT YET** decompressed automatically.
 
-The result is an object of class `TableWrapper` that contains the following methods:
+The result is an object of class `TableWrapper` that contains the following properties anf methods:
 
 #### `rowCount`
 
