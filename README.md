@@ -1,6 +1,6 @@
-# nft-compress
+# nft-csv
 
-nf-test plugin to provide support for CSV files.
+nf-test plugin to provide support for CSV files based on [tablesaw](https://jtablesaw.github.io/tablesaw/).
 
 ## Requirements
 

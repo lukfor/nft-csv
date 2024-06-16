@@ -153,7 +153,7 @@ public class TableWrapper {
     public TableWrapper view() {
         System.out.println();
         System.out.println(table.structure()+ "\n");
-        System.out.println("Size: " + getColumnCount() + " columns, " + getRowCount() + "rows.");
+        System.out.println("Size: " + getColumnCount() + " columns, " + getRowCount() + " rows.");
         System.out.println();
         return this;
     }
