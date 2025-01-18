@@ -62,18 +62,18 @@ with( path("file.tab").csv(sep: "\t")) {
 ```
 
 
-#### `columCount`
+#### `columnCount`
 
 Returns the number of columns in the table.
 
 Examples:
 
 ```groovy
-assert path("file.csv").csv.columCount == 3
+assert path("file.csv").csv.columnCount == 3
 
 //or
 with( path("file.csv").csv) {
-    assert columCount == 3
+    assert columnCount == 3
 }
 ```
 
