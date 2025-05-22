@@ -42,6 +42,12 @@ public class TableWrapperBuilder {
             optionsBuilder.quoteChar(options.get("quote").toString().charAt(0));
         }
 
+        if (options.containsKey("commentPrefix")) {
+            Object prefixObj = options.get("commentPrefix");
+            Character prefix = (prefixObj instanceof Character) ? (Character)prefixObj : prefixObj.toString().charAt(0);
+            optionsBuilder.commentPrefix(prefix);
+        }
+
         //TODO: add skip n lines and limit?
 
         CsvReadOptions csvReadOptions = optionsBuilder.build();

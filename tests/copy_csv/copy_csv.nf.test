@@ -213,4 +213,40 @@ nextflow_process {
 
     }
 
+    test("Should allow comment character configuration") {
+
+      when {
+        process {
+          """
+          input[0] = file("${projectDir}/tests/simple.comment.csv")
+          """
+        }
+      }
+
+      then {
+        def filename = process.out.csv.get(0)
+        with(path(filename).csv){
+          assert columnNames == ["col_a", "col_b", "col_c"]
+          assert rowCount == 4
+          assert columnCount == 3
+        }
+
+        // If we set `csv(commentPrefix: null)`, the prefix will default to '#'.
+        // Here we pass the null character (\0) indicating we don't want to use a comment character
+        with(path(filename).csv(commentPrefix: '\0', header: false)) {
+          assert rowCount == 6
+          assert columnCount == 3
+          assert rows[0] == ["C0": "#ColA", "C1": "ColB", "C2": "ColC"]
+        }
+
+        // Use '@' as the comment character
+        with(path(filename).csv(commentPrefix: '@' as char, header: false)) {
+          assert rowCount == 5
+          assert columnCount == 3
+          assert rows[0] == ["C0": "#ColA", "C1": "ColB", "C2": "ColC"]
+          assert columns["C0"] == ["#ColA", "col_a", '1', '4', '7']
+        }
+      }
+    }
+
 }
