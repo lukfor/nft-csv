@@ -36,13 +36,12 @@ nextflow_process {
         assert rowCount == 4
         assert columnCount == 3
         assert rows[1] == ["col_a": 4, "col_b": 5, "col_c": 6]
-        assert rows[1] == ["col_c": 6, "col_a": 4, "col_b": 5]
-        assert columns["col_b"] == [2, 5 ,8, 11]
-        assert columns["col_b"] != [5, 2 ,8, 11]
+        snapshot(columns).match("sortColumns_false_columns")
       }
 
       with(path(filename).csv.sortRows("col_a", false)){
         assert columns["col_a"] == [10, 7, 4, 1]
+        snapshot(rows).match("sortRows_false_columns")
       }
 
       csv("https://raw.githubusercontent.com/jtablesaw/tablesaw/master/data/bush.csv").view()

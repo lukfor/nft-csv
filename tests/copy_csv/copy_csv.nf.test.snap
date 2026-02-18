@@ -1,0 +1,62 @@
+{
+    "sortRows_false_columns": {
+        "content": [
+            [
+                {
+                    "col_c": 12,
+                    "col_b": 11,
+                    "col_a": 10
+                },
+                {
+                    "col_c": 9,
+                    "col_b": 8,
+                    "col_a": 7
+                },
+                {
+                    "col_c": 6,
+                    "col_b": 5,
+                    "col_a": 4
+                },
+                {
+                    "col_c": 3,
+                    "col_b": 2,
+                    "col_a": 1
+                }
+            ]
+        ],
+        "timestamp": "2026-02-18T11:02:14.66704203",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "sortColumns_false_columns": {
+        "content": [
+            {
+                "col_c": [
+                    3,
+                    6,
+                    9,
+                    12
+                ],
+                "col_b": [
+                    2,
+                    5,
+                    8,
+                    11
+                ],
+                "col_a": [
+                    1,
+                    4,
+                    7,
+                    10
+                ]
+            }
+        ],
+        "timestamp": "2026-02-18T11:00:19.226474623",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    }
+}
