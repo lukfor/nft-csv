@@ -4,9 +4,9 @@ process COPY_CSV {
     path zip
 
   output:
-     path "output_*", emit: csv
+    path "output_*", emit: csv
 
-
+  script:
   """
 	cp ${zip} output_${zip.name}
   """

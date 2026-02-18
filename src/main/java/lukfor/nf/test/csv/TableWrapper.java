@@ -79,9 +79,9 @@ public class TableWrapper {
      */
     public TableWrapper sortRows(String columnName, boolean ascending) {
         if (ascending) {
-            table.sortAscendingOn(columnName);
+            this.table = table.sortAscendingOn(columnName);
         } else {
-            table.sortDescendingOn(columnName);
+            this.table = table.sortDescendingOn(columnName);
         }
         return this;
     }
@@ -100,7 +100,7 @@ public class TableWrapper {
     public TableWrapper sortRows() {
         List<Column<?>> columns = table.columns();
         String[] columnNames = columns.stream().map(Column::name).toArray(String[]::new);
-        table.sortOn(columnNames);
+        this.table = table.sortOn(columnNames);
         return this;
     }
 
