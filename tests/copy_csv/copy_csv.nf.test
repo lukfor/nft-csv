@@ -29,51 +29,53 @@ nextflow_process {
         assert columns["col_b"] != [5, 2 ,8, 11]
       }
 
-        with(path(filename).csv.sortColumns(false)){
-          assert columnNames == ["col_c", "col_b", "col_a"]
-          assert "col_b" in columnNames
-          assert "lukas" !in columnNames
-          assert rowCount == 4
-          assert columnCount == 3
-          assert rows[1] == ["col_a": 4, "col_b": 5, "col_c": 6]
-          assert rows[1] == ["col_c": 6, "col_a": 4, "col_b": 5]
-          assert columns["col_b"] == [2, 5 ,8, 11]
-          assert columns["col_b"] != [5, 2 ,8, 11]
-          view()
-        }
+      with(path(filename).csv.sortColumns(false)){
+        assert columnNames == ["col_c", "col_b", "col_a"]
+        assert "col_b" in columnNames
+        assert "lukas" !in columnNames
+        assert rowCount == 4
+        assert columnCount == 3
+        assert rows[1] == ["col_a": 4, "col_b": 5, "col_c": 6]
+        snapshot(columns).match("sortColumns_false_columns")
+      }
 
-        csv("https://raw.githubusercontent.com/jtablesaw/tablesaw/master/data/bush.csv").view()
+      with(path(filename).csv.sortRows("col_a", false)){
+        assert columns["col_a"] == [10, 7, 4, 1]
+        snapshot(rows).match("sortRows_false_columns")
+      }
+
+      csv("https://raw.githubusercontent.com/jtablesaw/tablesaw/master/data/bush.csv").view()
     }
 
   }
 
-    test("Should work with csv and no header") {
+  test("Should work with csv and no header") {
 
-      when {
-        process {
-          """
-          input[0] = file("${projectDir}/tests/simple.csv")
-          """
-        }
+    when {
+      process {
+        """
+        input[0] = file("${projectDir}/tests/simple.csv")
+        """
       }
-
-      then {
-        def filename = process.out.csv.get(0)
-        with(path(filename).csv(header: false)){
-          assert columnNames == ["C0", "C1", "C2"]
-          assert "col_b" !in columnNames
-          assert "C1" in columnNames
-          assert rowCount == 5
-          assert columnCount == 3
-          // values are strings, because columns are not numbers.
-          assert rows[1] == ["C0": "1", "C1": "2", "C2": "3"]
-          assert rows[1] == ["C1": "2", "C0": "1", "C2": "3"]
-          assert columns["C1"] == ["col_b", "2", "5" , "8", "11"]
-          assert columns["C1"] != ["col_b", "5", "2" , "8", "11"]
-        }
-      }
-
     }
+
+    then {
+      def filename = process.out.csv.get(0)
+      with(path(filename).csv(header: false)){
+        assert columnNames == ["C0", "C1", "C2"]
+        assert "col_b" !in columnNames
+        assert "C1" in columnNames
+        assert rowCount == 5
+        assert columnCount == 3
+        // values are strings, because columns are not numbers.
+        assert rows[1] == ["C0": "1", "C1": "2", "C2": "3"]
+        assert rows[1] == ["C1": "2", "C0": "1", "C2": "3"]
+        assert columns["C1"] == ["col_b", "2", "5" , "8", "11"]
+        assert columns["C1"] != ["col_b", "5", "2" , "8", "11"]
+      }
+    }
+
+  }
 
   test("Should work with different separator") {
 
@@ -102,32 +104,32 @@ nextflow_process {
 
   }
 
-    test("Should work with different separator and quotes") {
+  test("Should work with different separator and quotes") {
 
-      when {
-        process {
-          """
-          input[0] = file("${projectDir}/tests/simple.quote.tab")
-          """
-        }
+    when {
+      process {
+        """
+        input[0] = file("${projectDir}/tests/simple.quote.tab")
+        """
       }
-
-      then {
-        def filename = process.out.csv.get(0)
-        with(path(filename).csv(sep: ' ', header: true)){
-          assert columnNames == ["col_a", "col_b", "col_c"]
-          assert "col_b" in columnNames
-          assert "lukas" !in columnNames
-          assert rowCount == 4
-          assert columnCount == 3
-          assert rows[1] == ["col_a": 4, "col_b": 5, "col_c": 6]
-          assert rows[1] == ["col_c": 6, "col_a": 4, "col_b": 5]
-          assert columns["col_b"] == [2, 5 ,8, 11]
-          assert columns["col_b"] != [5, 2 ,8, 11]
-        }
-      }
-
     }
+
+    then {
+      def filename = process.out.csv.get(0)
+      with(path(filename).csv(sep: ' ', header: true)){
+        assert columnNames == ["col_a", "col_b", "col_c"]
+        assert "col_b" in columnNames
+        assert "lukas" !in columnNames
+        assert rowCount == 4
+        assert columnCount == 3
+        assert rows[1] == ["col_a": 4, "col_b": 5, "col_c": 6]
+        assert rows[1] == ["col_c": 6, "col_a": 4, "col_b": 5]
+        assert columns["col_b"] == [2, 5 ,8, 11]
+        assert columns["col_b"] != [5, 2 ,8, 11]
+      }
+    }
+
+  }
 
   test("Should work with csv.gz") {
 
@@ -156,97 +158,96 @@ nextflow_process {
 
   }
 
-    test("Should work with tablesaw") {
+  test("Should work with tablesaw") {
 
-      when {
-        process {
-          """
-          input[0] = file("${projectDir}/tests/simple.csv")
-          """
-        }
-      }
-
-      then {
-        def filename = process.out.csv.get(0)
-        with(path(filename).csv){
-          assert columnNames == ["col_a", "col_b", "col_c"]
-          assert rowCount == 4
-          assert columnCount == 3
-        }
-        def table = csv(path(filename).csv.table.select("col_c", "col_a"))
-
-        with(table){
-          assert columnNames == ["col_c", "col_a"]
-          assert rowCount == 4
-          assert columnCount == 2
-        }
-      }
-
-    }
-
-
-    test("Should work with tablesaw") {
-
-      when {
-        process {
-          """
-          input[0] = file("${projectDir}/tests/simple.csv")
-          """
-        }
-      }
-
-      then {
-        def filename = process.out.csv.get(0)
-        with(path(filename).csv){
-          assert columnNames == ["col_a", "col_b", "col_c"]
-          assert rowCount == 4
-          assert columnCount == 3
-        }
-        def table = csv(path(filename).csv.table.select("col_c", "col_a"))
-
-        with(table){
-          assert columnNames == ["col_c", "col_a"]
-          assert rowCount == 4
-          assert columnCount == 2
-        }
-      }
-
-    }
-
-    test("Should allow comment character configuration") {
-
-      when {
-        process {
-          """
-          input[0] = file("${projectDir}/tests/simple.comment.csv")
-          """
-        }
-      }
-
-      then {
-        def filename = process.out.csv.get(0)
-        with(path(filename).csv){
-          assert columnNames == ["col_a", "col_b", "col_c"]
-          assert rowCount == 4
-          assert columnCount == 3
-        }
-
-        // If we set `csv(commentPrefix: null)`, the prefix will default to '#'.
-        // Here we pass the null character (\0) indicating we don't want to use a comment character
-        with(path(filename).csv(commentPrefix: '\0', header: false)) {
-          assert rowCount == 6
-          assert columnCount == 3
-          assert rows[0] == ["C0": "#ColA", "C1": "ColB", "C2": "ColC"]
-        }
-
-        // Use '@' as the comment character
-        with(path(filename).csv(commentPrefix: '@' as char, header: false)) {
-          assert rowCount == 5
-          assert columnCount == 3
-          assert rows[0] == ["C0": "#ColA", "C1": "ColB", "C2": "ColC"]
-          assert columns["C0"] == ["#ColA", "col_a", '1', '4', '7']
-        }
+    when {
+      process {
+        """
+        input[0] = file("${projectDir}/tests/simple.csv")
+        """
       }
     }
+
+    then {
+      def filename = process.out.csv.get(0)
+      with(path(filename).csv){
+        assert columnNames == ["col_a", "col_b", "col_c"]
+        assert rowCount == 4
+        assert columnCount == 3
+      }
+      def table = csv(path(filename).csv.table.select("col_c", "col_a"))
+
+      with(table){
+        assert columnNames == ["col_c", "col_a"]
+        assert rowCount == 4
+        assert columnCount == 2
+      }
+    }
+
+  }
+
+  test("Should work with tablesaw") {
+
+    when {
+      process {
+        """
+        input[0] = file("${projectDir}/tests/simple.csv")
+        """
+      }
+    }
+
+    then {
+      def filename = process.out.csv.get(0)
+      with(path(filename).csv){
+        assert columnNames == ["col_a", "col_b", "col_c"]
+        assert rowCount == 4
+        assert columnCount == 3
+      }
+      def table = csv(path(filename).csv.table.select("col_c", "col_a"))
+
+      with(table){
+        assert columnNames == ["col_c", "col_a"]
+        assert rowCount == 4
+        assert columnCount == 2
+      }
+    }
+
+  }
+
+  test("Should allow comment character configuration") {
+
+    when {
+      process {
+        """
+        input[0] = file("${projectDir}/tests/simple.comment.csv")
+        """
+      }
+    }
+
+    then {
+      def filename = process.out.csv.get(0)
+      with(path(filename).csv){
+        assert columnNames == ["col_a", "col_b", "col_c"]
+        assert rowCount == 4
+        assert columnCount == 3
+      }
+
+      // If we set `csv(commentPrefix: null)`, the prefix will default to '#'.
+      // Here we pass the null character (\0) indicating we don't want to use a comment character
+      with(path(filename).csv(commentPrefix: '\0', header: false)) {
+        assert rowCount == 6
+        assert columnCount == 3
+        assert rows[0] == ["C0": "#ColA", "C1": "ColB", "C2": "ColC"]
+      }
+
+      // Use '@' as the comment character
+      with(path(filename).csv(commentPrefix: '@' as char, header: false)) {
+        assert rowCount == 5
+        assert columnCount == 3
+        assert rows[0] == ["C0": "#ColA", "C1": "ColB", "C2": "ColC"]
+        assert columns["C0"] == ["#ColA", "col_a", '1', '4', '7']
+      }
+    }
+  }
 
 }

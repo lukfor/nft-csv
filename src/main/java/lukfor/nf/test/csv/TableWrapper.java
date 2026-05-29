@@ -61,7 +61,7 @@ public class TableWrapper {
      * Each entry in the map represents a column with the column name as the key.
      */
     public Map<String, List<Object>> getColumns() {
-        Map<String, List<Object>> columns = new HashMap<>();
+        Map<String, List<Object>> columns = new LinkedHashMap<>();
         for (Column<?> column : table.columns()) {
             List<Object> columnData = new ArrayList<>();
             for (int i = 0; i < column.size(); i++) {
@@ -79,9 +79,9 @@ public class TableWrapper {
      */
     public TableWrapper sortRows(String columnName, boolean ascending) {
         if (ascending) {
-            table.sortAscendingOn(columnName);
+            this.table = table.sortAscendingOn(columnName);
         } else {
-            table.sortDescendingOn(columnName);
+            this.table = table.sortDescendingOn(columnName);
         }
         return this;
     }
@@ -100,7 +100,7 @@ public class TableWrapper {
     public TableWrapper sortRows() {
         List<Column<?>> columns = table.columns();
         String[] columnNames = columns.stream().map(Column::name).toArray(String[]::new);
-        table.sortOn(columnNames);
+        this.table = table.sortOn(columnNames);
         return this;
     }
 
